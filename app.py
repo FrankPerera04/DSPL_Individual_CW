@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import io
 
 # Set page configuration
 st.set_page_config(page_title="Accommodation Dashboard", layout="wide")
@@ -43,6 +44,16 @@ if "All" not in selected_districts:
     filtered_df = filtered_df[filtered_df["District"].isin(selected_districts)]
 if "All" not in selected_types:
     filtered_df = filtered_df[filtered_df["Type"].isin(selected_types)]
+
+#Download Button
+csv_buffer = io.StringIO()
+df.to_csv(csv_buffer, index=False)
+st.sidebar.download_button(
+    label="📥 Download Dataset",
+    data=csv_buffer.getvalue(),
+    file_name="dataset.csv",
+    mime="text/csv"
+)
 
 # Main Page Routing
 if page == "About":
